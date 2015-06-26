@@ -15,8 +15,10 @@ map.on('ready', function(e){
   request.success(function( data ) {
     for (var i = 0; i < data.length; i++){ 
       var capitol = data[i];
-      var circle = L.circle([capitol.latitude, capitol.longitude], 50).addTo(map);
+      var circle = L.circle([capitol.latitude, capitol.longitude], 4000).addTo(map);
+      circle.data = capitol;
       circle.on('click', function(e) {
+        console.log(this.data.state);
         
       });
     }
