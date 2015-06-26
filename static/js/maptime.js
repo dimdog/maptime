@@ -1,24 +1,22 @@
 L.mapbox.accessToken = 'pk.eyJ1IjoiYmVucmVpdGVyIiwiYSI6ImpzNmFSV3MifQ.vf_utYUIeH6BauUso8sn0w';
 // Create a map in the div #map
 
+var minTime = 0;
+var maxTime = 1000;
 var map = L.mapbox.map('map', 'benreiter.jo6c0mfh')
-    .setView([42, -71.50], 15);
-
-
-map.on('click', function(e) {
-});
-
+    .setView([40.939467, -73.768145], 15);
 
 
 map.on('ready', function(e){
   var request = $.get("http://localhost:3000/data");
   request.success(function( data ) {
+    console.log(data);
     for (var i = 0; i < data.length; i++){ 
-      var capitol = data[i];
-      var circle = L.circle([capitol.latitude, capitol.longitude], 4000).addTo(map);
-      circle.data = capitol;
+      var article = data[i];
+      var circle = L.circle([article.lat, article.lng], 4000).addTo(map);
+      circle.data = article;
       circle.on('click', function(e) {
-        console.log(this.data.state);
+        console.log(this.data.url);
         
       });
     }
@@ -26,6 +24,31 @@ map.on('ready', function(e){
 
 });
 map.on('moveend', function(e){
-  
-  console.log(map.getBounds());
+   
+  var bounds = map.getBounds();
+  console.log(bounds);
+  var swla = bounds._southWest.lat;
+  var swln = bounds._southWest.lng;
+  var nela = bounds._northEast.lat;
+  var neln = bounds._northEast.lng;
+  var request = $.get("http://localhost:3000/years?swla="+swla+"&swln="+swln+"&nela="+nela+"&neln="+neln); //use join. jesus.
+  request.success(function( data) {
+    slider.nstSlider('set_range', data.min, data.max);
+  });
 });
+
+var slider = $('.nstSlider').nstSlider({
+    "crossable_handles": false,
+    "left_grip_selector": ".leftGrip",
+    "right_grip_selector": ".rightGrip",
+    "value_bar_selector": ".bar",
+    "value_changed_callback": function(cause, leftValue, rightValue) {
+        $(this).parent().find('.leftLabel').text(leftValue);
+        minTime = leftValue;
+        $(this).parent().find('.rightLabel').text(rightValue);
+        maxTime = rightValue;
+    }
+});
+slider.nstSlider('set_range', -2000, 2015);
+slider.nstSlider('set_position', 500, 750);
+
