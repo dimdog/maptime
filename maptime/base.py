@@ -1,5 +1,4 @@
 import random
-from maptime import config
 from sqlalchemy import String, Float, Integer, Column, create_engine, ForeignKey
 from sqlalchemy.orm import relationship, joinedload, subqueryload, Session
 from sqlalchemy.ext.declarative import declarative_base
@@ -13,14 +12,7 @@ class sqlConnection:
     self.session = self.make_session(self.engine)
 
   def get_engine(self):
-    test = config.get('test')
-    sqla_url = config.get('sqlalchemy.url')
-    username = config.get('sqlalchemy.username')
-    password = config.get('sqlalchemy.password')
-    host = config.get('sqlalchemy.host')
-    database = config.get('sqlalchemy.database')
-    
-    return create_engine(sqla_url%(username,password,host,database))
+    return create_engine("postgres://dlgrtxciercfic:o5jStUy_qsVtULfOTMHpDbcS1O@ec2-107-22-175-206.compute-1.amazonaws.com:5432/dbj3fpv0kh4auk")
 
   def make_session(self, engine):
     session = Session(engine)
@@ -34,11 +26,11 @@ class Coordinates(Base):
     article = Column(String)
     lat = Column(Float, index=True)
     lng = Column(Float, index=True)
+    rank = Column(Integer, default=0)
     
     
     
-
 
 
   
-
+#create table coordinates ( id SERIAL, article VARCHAR(255) not null, lat FLOAT not null, lng FLOAT not null, rank INTEGER not null default 0, primary key (id) );

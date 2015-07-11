@@ -5,3 +5,6 @@ ipython
 simplejson
 configobj
 mysql-python
+wikipedia
+psycopg2
+gunicorn

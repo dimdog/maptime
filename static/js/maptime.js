@@ -6,6 +6,13 @@ var maxTime = 1000;
 var map = L.mapbox.map('map', 'benreiter.jo6c0mfh')
     .setView([40.939467, -73.768145], 15);
 
+var getWikiData = function (article){
+  var request = $.get("http://localhost:3000/wiki?article="+article);
+  request.success(function( data ) {
+    console.log(data);
+  });
+}
+
 var circles = [];
 
 map.on('ready', function(e){
@@ -22,11 +29,15 @@ map.on('ready', function(e){
       circle.data = article;
       circles.push(circle);
       circle.on('click', function(e) {
-        console.log(this.data.url);
+        console.log("here");
+        console.log(this.data.article);
+        getWikiData(this.data.article);
         
       });
     }
   });
+
+
 
 });
 map.on('moveend', function(e){
@@ -39,7 +50,6 @@ map.on('moveend', function(e){
   var request = $.get("http://localhost:3000/data?swla="+swla+"&swln="+swln+"&nela="+nela+"&neln="+neln); //use join ffs.
   request.success(function( data ) {
     for (var i = 0; i < circles.length; i++){
-      console.log(circles[i]);
       map.removeLayer(circles[i]);
     }
     for (var i = 0; i < data.length; i++){ 
@@ -48,7 +58,7 @@ map.on('moveend', function(e){
       circle.data = article;
       circles.push(circle);
       circle.on('click', function(e) {
-        console.log(this.data.url);
+        getWikiData(this.data.article);
         
       });
     }
