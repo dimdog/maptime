@@ -7,7 +7,7 @@ var map = L.mapbox.map('map', 'benreiter.jo6c0mfh')
     .setView([40.939467, -73.768145], 15);
 
 var getWikiData = function (article){
-  var request = $.get("http://localhost:3000/wiki?article="+article);
+  var request = $.get("https://boiling-depths-4153.herokuapp.com/wiki?article="+article);
   request.success(function( data ) {
     console.log(data);
   });
@@ -21,7 +21,7 @@ map.on('ready', function(e){
   var swln = bounds._southWest.lng;
   var nela = bounds._northEast.lat;
   var neln = bounds._northEast.lng;
-  var request = $.get("http://localhost:3000/data?swla="+swla+"&swln="+swln+"&nela="+nela+"&neln="+neln); //use join. jesus.
+  var request = $.get("https://boiling-depths-4153.herokuapp.com/data?swla="+swla+"&swln="+swln+"&nela="+nela+"&neln="+neln); //use join. jesus.
   request.success(function( data ) {
     for (var i = 0; i < data.length; i++){ 
       var article = data[i];
@@ -47,7 +47,7 @@ map.on('moveend', function(e){
   var swln = bounds._southWest.lng;
   var nela = bounds._northEast.lat;
   var neln = bounds._northEast.lng;
-  var request = $.get("http://localhost:3000/data?swla="+swla+"&swln="+swln+"&nela="+nela+"&neln="+neln); //use join ffs.
+  var request = $.get("https://boiling-depths-4153.herokuapp.com/data?swla="+swla+"&swln="+swln+"&nela="+nela+"&neln="+neln); //use join ffs.
   request.success(function( data ) {
     for (var i = 0; i < circles.length; i++){
       map.removeLayer(circles[i]);
