@@ -17,8 +17,9 @@ class GeoTaggedAPI:
           "lng" : lng
         }
         self.articles.append(trans)
-      print self.articles[:5]
-      print "done"
     
       
+
+if __name__ == "__main__" :
+  GeoTaggedAPI().load()
 

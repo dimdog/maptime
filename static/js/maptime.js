@@ -8,32 +8,43 @@ var map = L.mapbox.map('map', 'benreiter.jo6c0mfh')
 
 
 map.on('ready', function(e){
-  var request = $.get("http://localhost:3000/data");
+  var bounds = map.getBounds();
+  var swla = bounds._southWest.lat;
+  var swln = bounds._southWest.lng;
+  var nela = bounds._northEast.lat;
+  var neln = bounds._northEast.lng;
+  var request = $.get("http://localhost:3000/data?swla="+swla+"&swln="+swln+"&nela="+nela+"&neln="+neln); //use join. jesus.
   request.success(function( data ) {
-    console.log(data);
     for (var i = 0; i < data.length; i++){ 
       var article = data[i];
-      var circle = L.circle([article.lat, article.lng], 4000).addTo(map);
+      var circle = L.circle([article.lat, article.lng], 200).addTo(map);
       circle.data = article;
       circle.on('click', function(e) {
         console.log(this.data.url);
         
       });
     }
-  })
+  });
 
 });
 map.on('moveend', function(e){
    
   var bounds = map.getBounds();
-  console.log(bounds);
   var swla = bounds._southWest.lat;
   var swln = bounds._southWest.lng;
   var nela = bounds._northEast.lat;
   var neln = bounds._northEast.lng;
-  var request = $.get("http://localhost:3000/years?swla="+swla+"&swln="+swln+"&nela="+nela+"&neln="+neln); //use join. jesus.
-  request.success(function( data) {
-    slider.nstSlider('set_range', data.min, data.max);
+  var request = $.get("http://localhost:3000/data?swla="+swla+"&swln="+swln+"&nela="+nela+"&neln="+neln); //use join. jesus.
+  request.success(function( data ) {
+    for (var i = 0; i < data.length; i++){ 
+      var article = data[i];
+      var circle = L.circle([article.lat, article.lng], 200).addTo(map);
+      circle.data = article;
+      circle.on('click', function(e) {
+        console.log(this.data.url);
+        
+      });
+    }
   });
 });
 

@@ -1,2 +1,7 @@
 flask
 networkx
+sqlalchemy==1.0.6
+ipython
+simplejson
+configobj
+mysql-python
