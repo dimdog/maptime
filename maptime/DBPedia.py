@@ -7,9 +7,7 @@ Base = declarative_base()
 
 class DBPediaAPI:
   
-  def __init__(self, coordinatesFile, linksFile):
-    self.coordinatesFile = coordinatesFile
-    self.linksFile = linksFile
+  def __init__(self):
     self.connector = base.sqlConnection()
 
   def processRanks(self, ranks):
@@ -22,8 +20,8 @@ class DBPediaAPI:
     self.connector.session.flush() 
     print "done updating this set..."
 
-  def pageRank(self):
-    with open(self.linksFile, 'r') as ofile:
+  def pageRank(self, linksFile):
+    with open(linksFile, 'r') as ofile:
       header = ofile.readline()
       counter = 0
       for row in ofile.readlines(1000000):
@@ -46,9 +44,9 @@ class DBPediaAPI:
       print "flushed"
 
 
-  def load(self):
+  def load(self, coordinatesFile):
     errors = []
-    with open(self.coordinatesFile, 'r') as ofile:
+    with open(coordinatesFile, 'r') as ofile:
       counter = 0
       #articles = []
       for row in ofile.readlines():
@@ -63,18 +61,14 @@ class DBPediaAPI:
         if counter==100000:
           print "100000"
           counter=0
-          try:
-            self.connector.session.commit()
-          except:
-            #errors.extend(articles) 
-            #articles = []
-            self.connector.session.rollback()
-            pass
+          self.connector.session.flush()
+          self.connector.session.commit()
 
     #self.loadErrors(errors,1000)
     print "flushing"
-    self.connector.session.commit()
     self.connector.session.flush()
+    print "commiting"
+    self.connector.session.commit()
     print "done"
 
   def loadErrors(errors, limit):

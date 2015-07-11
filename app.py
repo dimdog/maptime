@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 
 
-#DBPediaApi = DBPedia.DBPediaAPI('data/coordinates.nt', 'data/page_links/page_links_en.nt')
+DBPediaApi = DBPedia.DBPediaAPI()
 
 #DBPediaApi.load()
 
@@ -25,7 +25,7 @@ def data():
   swln = request.args.get("swln")
   nela = request.args.get("nela")
   neln = request.args.get("neln")
-  #return Response(json.dumps(DBPediaApi.query(swla,swln,nela,neln)), mimetype="application/json", headers= {"Access-Control-Allow-Origin":"*", "Content-Type":"application/json"}) 
+  return Response(json.dumps(DBPediaApi.query(swla,swln,nela,neln)), mimetype="application/json", headers= {"Access-Control-Allow-Origin":"*", "Content-Type":"application/json"}) 
   #return Response(json.dumps("hello"),swln,nela,neln)), mimetype="application/json", headers= {"Access-Control-Allow-Origin":"*", "Content-Type":"application/json"}) 
 
 @app.route('/wiki')
