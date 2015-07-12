@@ -58,8 +58,8 @@ class DBPediaAPI:
         self.connector.session.add(coordinateObj)
         #articles.append(coordinateObj)
         counter+=1
-        if counter==100000:
-          print "100000"
+        if counter==1000:
+          print "1000"
           counter=0
           self.connector.session.flush()
           self.connector.session.commit()

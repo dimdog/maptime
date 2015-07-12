@@ -8,3 +8,4 @@ mysql-python
 wikipedia
 psycopg2
 gunicorn
+boto
